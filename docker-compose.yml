@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  api:
+    image: node:20.12.0
+    container_name: api
+    working_dir: /app
+    volumes:
+      - "./backend/:/app"  # Mount your backend directory
+    command: sh -c "npm install && npm install -g nodemon && npm run dev"  # Install dependencies and start the server
+    ports:
+      - "4000:4000"
+
+  web:
+    image: node:20.12.0
+    container_name: web
+    working_dir: /src
+    volumes:
+      - "./frontend/:/src"  # Mount your frontend directory
+    command: sh -c "npm install && npm start"  # Install dependencies and start the React app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api  # Ensure the API is started before the web app
